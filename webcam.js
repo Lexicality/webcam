@@ -4,10 +4,12 @@
 	var cam = document.getElementById("vebcam");
 	var timestamps = [];
 	var last = "";
+	var caption = document.getElementById("caption");
 
 	img.addEventListener("load", function()
 	{
 		cam.src = img.src;
+		caption.textContent = (new Date( parseInt( img.src.slice(-14, -4), 10 ) * 1000 ).toUTCString() );
 	});
 
 	function update()
@@ -27,6 +29,7 @@
 		timestamps = files.map(function(file) {
 			return parseInt(file.slice(0, -4), 10);
 		});
+		console.log(timestamps);
 	});
 
 	// Fun and profit

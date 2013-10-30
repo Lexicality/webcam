@@ -1,0 +1,16 @@
+#webcam {
+    text-align: center;
+    position: relative;
+    width: 640px;
+    margin: 0 auto;
+}
+#caption {
+    position: absolute;
+    bottom: 5px;
+    left:  10px;
+    color: yellow;
+	font-family: Consalas monospace;
+}
+#vebcam {
+	display: block;
+}
