@@ -8,9 +8,18 @@
     position: absolute;
     bottom: 5px;
     left:  10px;
-    color: yellow;
+    color: white;
 	font-family: Consalas monospace;
+}
+#caption.playing {
+    color: yellow;
+}
+#caption.paused {
+	color: red;
 }
 #vebcam {
 	display: block;
+}
+#controls {
+	text-align: center;
 }
