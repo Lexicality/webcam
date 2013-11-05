@@ -8,7 +8,7 @@
 	var paused = false;
 	var btnPause = document.getElementById("btn-pause");
 	var timeshift = document.getElementById("time-sel");
-	var limit = new Date();
+	var latestDate = new Date();
 
 	function updateImage()
 	{
@@ -36,7 +36,7 @@
 		latest = words;
 		var timestamp = timestampFromFile( words );
 		timestamps.push( timestamp );
-		limit.setTime( timestamp );
+		latestDate.setTime( timestamp );
 		if ( ! paused )
 			updateImage();
 	}
@@ -83,6 +83,11 @@
 	{
 		event.preventDefault();
 		togglePause();
+	});
+	document.getElementById("btn-cycle").addEventListener("click", function(event)
+	{
+		event.preventDefault();
+		timeshift.valueAsDate = latestDate;
 	});
 
 	// Fun and profit
