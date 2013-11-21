@@ -1,4 +1,4 @@
-(function($){ 'use strict';
+(function(){ 'use strict';
 	var root = "http://storm.benjojo.co.uk/webcam";
 	var img = new Image();
 	var cam = document.getElementById("vebcam");
@@ -9,6 +9,8 @@
 	var btnPause = document.getElementById("btn-pause");
 	var timeshift = document.getElementById("time-sel");
 	var latestDate = new Date();
+	var latestFetcher = new XMLHttpRequest();
+
 
 	function updateImage()
 	{
@@ -29,8 +31,9 @@
 			timeshift.valueAsDate = date;
 	});
 
-	function gotLatest(words)
+	latestFetcher.addEventListener('load', function()
 	{
+		var words = this.responseText;
 		if ( words === latest )
 			return;
 		latest = words;
@@ -39,15 +42,23 @@
 		latestDate.setTime( timestamp );
 		if ( ! paused )
 			updateImage();
-	}
+	});
 	function update()
 	{
-		$.get( root + '/lfile.php' ).done( gotLatest );
+		latestFetcher.open('GET', root + '/lfile.php', true);
+		latestFetcher.send();
 	}
 
-	$.getJSON(root + "/files.php").done(function(files) {
-		timestamps = files.map(timestampFromFile);
-	});
+	(function(){
+		var req = new XMLHttpRequest();
+		req.responseType = 'json';
+		req.addEventListener('load', function()
+		{
+			timestamps = this.response.map(timestampFromFile);
+		});
+		req.open('GET', root + "/files.php", true);
+		req.send();
+	})();
 
 	function pause()
 	{
@@ -94,4 +105,4 @@
 	cam.src = root + "/latest.php";
 	update();
 	setInterval(update, 15000);
-})(jQuery);
+})();
