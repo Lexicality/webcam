@@ -51,15 +51,31 @@
 		latestFetcher.send();
 	}
 
-	(function(){
+	(function resetTimestamps(){
 		var req = new XMLHttpRequest();
 		req.responseType = "json";
 		req.addEventListener("load", function()
 		{
+			offsetDate = new Date();
+			offsetDate.setHours(0);
+			offsetDate.setMinutes(0);
+			offsetDate.setSeconds(0);
+			offsetDate.setMilliseconds(0);
 			timestamps = this.response.map( timestampFromFile );
+			req = null; // hi gc
 		});
 		req.open( "GET", root + "/files.php", true );
 		req.send();
+		var then = new Date();
+		// if ( then.getHours() >= 6 ) // If the next 6 AM is tomorrow
+			then.setTime( then.getTime() + 86400000 ); // uh
+		// then.setHours(6);
+		then.setHours(0);
+		then.setMinutes(2); // Deal with cron being late
+		then.setSeconds(0);
+		then.setMilliseconds(0);
+		// Make sure everything gets reset it the page is left open overnight
+		window.setTimeout(resetTimestamps, then.getTime() - new Date().getTime());
 	})();
 
 	function pause()
