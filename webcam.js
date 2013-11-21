@@ -1,4 +1,4 @@
-(function(){ 'use strict';
+(function(){ "use strict";
 	var root = "http://storm.benjojo.co.uk/webcam";
 	var img = new Image();
 	var cam = document.getElementById("vebcam");
@@ -10,11 +10,12 @@
 	var timeshift = document.getElementById("time-sel");
 	var latestDate = new Date();
 	var latestFetcher = new XMLHttpRequest();
+	var offsetDate = new Date(0);
 
 
-	function updateImage()
+	function updateImage( fileName )
 	{
-		img.src = root + '/' + latest;
+		img.src = root + "/" + fileName;
 	}
 
 	function timestampFromFile( file )
@@ -24,14 +25,15 @@
 
 	img.addEventListener("load", function()
 	{
-		cam.src = img.src;
-		var date = new Date( timestampFromFile( img.src.slice(-14) ) );
+		var src = this.src;
+		cam.src = src;
+		var date = new Date( timestampFromFile( src.slice(-14) ) );
 		caption.textContent = date.toUTCString();
 		if ( ! paused )
 			timeshift.valueAsDate = date;
 	});
 
-	latestFetcher.addEventListener('load', function()
+	latestFetcher.addEventListener("load", function()
 	{
 		var words = this.responseText;
 		if ( words === latest )
@@ -41,22 +43,22 @@
 		timestamps.push( timestamp );
 		latestDate.setTime( timestamp );
 		if ( ! paused )
-			updateImage();
+			updateImage( latest );
 	});
 	function update()
 	{
-		latestFetcher.open('GET', root + '/lfile.php', true);
+		latestFetcher.open( "GET", root + "/lfile.php", true );
 		latestFetcher.send();
 	}
 
 	(function(){
 		var req = new XMLHttpRequest();
-		req.responseType = 'json';
-		req.addEventListener('load', function()
+		req.responseType = "json";
+		req.addEventListener("load", function()
 		{
-			timestamps = this.response.map(timestampFromFile);
+			timestamps = this.response.map( timestampFromFile );
 		});
-		req.open('GET', root + "/files.php", true);
+		req.open( "GET", root + "/files.php", true );
 		req.send();
 	})();
 
