@@ -67,9 +67,7 @@
 		req.open( "GET", root + "/files.php", true );
 		req.send();
 		var then = new Date();
-		// if ( then.getHours() >= 6 ) // If the next 6 AM is tomorrow
-			then.setTime( then.getTime() + 86400000 ); // uh
-		// then.setHours(6);
+		then.setTime( then.getTime() + 86400000 ); // uh
 		then.setHours(0);
 		then.setMinutes(2); // Deal with cron being late
 		then.setSeconds(0);
@@ -117,6 +115,24 @@
 	{
 		event.preventDefault();
 		timeshift.valueAsDate = latestDate;
+	});
+	document.getElementById("btn-go").addEventListener("click", function(event)
+	{
+		event.preventDefault();
+		var target = timeshift.valueAsDate.getTime() + offsetDate.getTime();
+		var ret = timestamps.reduce(function(ret, timestamp) {
+			if ( ret )
+				return ret;
+			console.info(timestamp - target);
+			if ( Math.abs( timestamp - target ) < 15000 )
+				return timestamp;
+		}, 0);
+		if ( ! ret ) {
+			alert( "I can't find " + timeshift.valueAsDate.toTimeString() + " on the server!" );
+			return;
+		}
+		pause();
+		updateImage( Math.floor( ret / 1000 ) + '.jpg' );
 	});
 
 	// Fun and profit
