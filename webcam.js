@@ -94,7 +94,7 @@
 		caption.classList.remove( "paused" );
 		caption.classList.add( "playing" );
 		btnPause.textContent = "Freeze";
-		updateImage();
+		updateImage( latest );
 		console.info("Unpaused!");
 	}
 
