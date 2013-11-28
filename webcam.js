@@ -134,7 +134,23 @@
 		pause();
 		updateImage( Math.floor( ret / 1000 ) + '.jpg' );
 	});
-
+	timeshift.addEventListener("change",function(){
+		event.preventDefault();
+		var target = timeshift.valueAsDate.getTime() + offsetDate.getTime();
+		var ret = timestamps.reduce(function(ret, timestamp) {
+			if ( ret )
+				return ret;
+			console.info(timestamp - target);
+			if ( Math.abs( timestamp - target ) < 15000 )
+				return timestamp;
+		}, 0);
+		if ( ! ret ) {
+			alert( "I can't find " + timeshift.valueAsDate.toTimeString() + " on the server!" );
+			return;
+		}
+		pause();
+		updateImage( Math.floor( ret / 1000 ) + '.jpg' );
+	});
 	// Fun and profit
 	cam.src = root + "/latest.php";
 	update();
