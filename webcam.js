@@ -128,7 +128,7 @@
 				return timestamp;
 		}, 0);
 		if ( ! ret ) {
-			//alert( "I can't find " + timeshift.valueAsDate.toTimeString() + " on the server!" );
+			caption.textContent = "I can't find " + timeshift.valueAsDate.toTimeString() + " on the server!";
 			return;
 		}
 		pause();
