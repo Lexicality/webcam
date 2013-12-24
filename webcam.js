@@ -53,6 +53,7 @@
 
 	(function resetTimestamps(){
 		var req = new XMLHttpRequest();
+		req.open( "GET", root + "/files.php", true );
 		req.responseType = "json";
 		req.addEventListener("load", function()
 		{
@@ -64,7 +65,6 @@
 			timestamps = this.response.map( timestampFromFile );
 			req = null; // hi gc
 		});
-		req.open( "GET", root + "/files.php", true );
 		req.send();
 		var then = new Date();
 		then.setTime( then.getTime() + 86400000 ); // uh
