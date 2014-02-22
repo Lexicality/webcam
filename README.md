@@ -1,4 +1,4 @@
-webcam
+Webcam
 ======
 
 A simple viewer for the webcam in our house
